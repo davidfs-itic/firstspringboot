@@ -11,5 +11,6 @@ data class Torneig (
     var nom: String? = null,
     var data: Instant? = null,
     var lloc: String? = null,
-    var numjugadors: Int? = null
+    var numjugadors: Int = 0,
+    var finalitzat: Boolean = false
 )
