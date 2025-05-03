@@ -3,6 +3,7 @@ package com.dfdocencia.backend.firstspringboot.controller
 import com.dfdocencia.backend.firstspringboot.model.Torneig
 import com.dfdocencia.backend.firstspringboot.repositori.TorneigRepositori
 import org.bson.types.ObjectId
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -23,10 +24,15 @@ class TornejosController(private val torneigRepositori: TorneigRepositori) {
     @GetMapping("/llista")
         fun Llista(): List<Torneig> = torneigRepositori.findAll()
 
+    @DeleteMapping("/eliminar/{id}")
+    fun eliminar(@PathVariable("id") id: String): Unit {
+        torneigRepositori.deleteById(ObjectId(id))
+    }
+
     @GetMapping("/llista/nom/{nom}")
     fun trobarTorneigPerNom(@PathVariable("nom") nom: String): Torneig? = null
-    @GetMapping("/llista/data/{data}")
 
+    @GetMapping("/llista/data/{data}")
     fun trobarTorneigPerData(@PathVariable("data") data: String): Torneig? = null
 
     fun trobarTorneigPerId(id: Long): Torneig? = null
