@@ -1,0 +1,27 @@
+name: Deploy Notes Backend
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.AWS_DOCENCIA }}
+
+      - name: Add server to known hosts
+        run: |
+          ssh-keyscan -H 3.85.179.9> ~/.ssh/known_hosts
+
+      - name: Build JAR
+        run: |
+          ./gradlew bootJar
