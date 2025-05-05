@@ -1,0 +1,14 @@
+# docker-compose.yml
+version: '3.8'
+services:
+  springboot-app:
+    container_name: sbapp
+#    env_file:
+#      - .env
+    build:
+      context: .                # Carpeta arrel del projecte
+      dockerfile: firstspringbootdockerbuild  # Nom del Dockerfile personalitzat
+    ports:
+      - "8080:8080"
+    environment:
+      MONGODBCONNECTION: ${MONGODBCONNECTION}
