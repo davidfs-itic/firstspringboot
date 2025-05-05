@@ -1,4 +1,4 @@
-name: Deploy Notes Backend
+name: Deploy Springboot in Docker AWS
 
 on:
   push:
