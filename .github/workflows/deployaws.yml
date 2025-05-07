@@ -41,7 +41,7 @@ jobs:
           
           ssh $REMOTE_SERVER << EOF
             cd $REMOTE_JAR_DIR
-            docker-compose up -d --build
+            sudo docker-compose up -d --build
             echo "done" >> $REMOTE_JAR_DIR/deployments.log
             #mv $REMOTE_JAR_DIR/$JAR_NAME $REMOTE_JAR_DIR/notes.jar
             #sudo systemctl restart notes.service
