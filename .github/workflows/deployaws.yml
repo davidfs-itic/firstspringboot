@@ -25,3 +25,24 @@ jobs:
       - name: Build JAR
         run: |
           ./gradlew bootJar
+
+      - name: Deploy JAR to Server
+        run: |
+          JAR_NAME="firstspringboot-0.0.1-SNAPSHOT.jar"
+          REMOTE_JAR_NAME="firstspringboot.jar"
+          DOCKER_FILES="./*docker*"
+          LOCAL_JAR_PATH="build/libs/$JAR_NAME"
+          REMOTE_SERVER="ubuntu@3.85.179.9"
+          REMOTE_JAR_DIR="/opt/docker/firstspringboot"
+          scp $LOCAL_JAR_PATH $REMOTE_SERVER:$REMOTE_JAR_DIR/$REMOTE_JAR_NAME
+          scp $DOCKER_FILES $REMOTE_SERVER:$REMOTE_JAR_DIR/
+          
+          #rsync -avz -e "ssh" $LOCAL_JAR_PATH $REMOTE_SERVER:$REMOTE_JAR_DIR/$JAR_NAME
+          
+          ssh $REMOTE_SERVER << EOF
+            cd $REMOTE_JAR_DIR
+            docker-compose up -d --build
+            echo "done" >> $REMOTE_JAR_DIR/deployments.log
+            #mv $REMOTE_JAR_DIR/$JAR_NAME $REMOTE_JAR_DIR/notes.jar
+            #sudo systemctl restart notes.service
+          EOF
