@@ -7,7 +7,7 @@ services:
 #      - .env
     build:
       context: .                # Carpeta arrel del projecte
-      dockerfile: firstspringbootdockerbuild  # Nom del Dockerfile personalitzat
+      dockerfile: dockerbuild  # Nom del Dockerfile personalitzat
     ports:
       - "8080:8080"
     environment:

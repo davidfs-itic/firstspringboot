@@ -1,4 +1,4 @@
-name: Deploy Springboot in Docker AWS
+name: Deploy Springboot in Docker
 
 on:
   push:
@@ -11,39 +11,54 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin' # Recomanat per a entorns Docker/Spring
+          cache: 'gradle'
 
       - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.5.3
+        uses: webfactory/ssh-agent@v0.8.0
         with:
-          ssh-private-key: ${{ secrets.AWS_DOCENCIA }}
+          ssh-private-key: ${{ secrets.SERVER_KEY_P }}
 
       - name: Add server to known hosts
         run: |
-          ssh-keyscan -H 3.85.179.9> ~/.ssh/known_hosts
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.SERVER_IP2 }} >> ~/.ssh/known_hosts
 
-      - name: Build JAR
+      - name: Build JAR with Gradle
         run: |
+          chmod +x gradlew
           ./gradlew bootJar
 
-      - name: Deploy JAR to Server
+      - name: Deploy files to Server
         run: |
-          JAR_NAME="firstspringboot-0.0.1-SNAPSHOT.jar"
-          REMOTE_JAR_NAME="firstspringboot.jar"
-          DOCKER_FILES="./*docker*"
-          LOCAL_JAR_PATH="build/libs/$JAR_NAME"
-          REMOTE_SERVER="ubuntu@3.85.179.9"
-          REMOTE_JAR_DIR="/opt/docker/firstspringboot"
-          scp $LOCAL_JAR_PATH $REMOTE_SERVER:$REMOTE_JAR_DIR/$REMOTE_JAR_NAME
-          scp $DOCKER_FILES $REMOTE_SERVER:$REMOTE_JAR_DIR/
+          # Definim variables
+          REMOTE_USER="ubuntu"
+          REMOTE_IP="${{ secrets.SERVER_IP2 }}"
+          REMOTE_DIR="/opt/docker/firstspringboot"
           
-          #rsync -avz -e "ssh" $LOCAL_JAR_PATH $REMOTE_SERVER:$REMOTE_JAR_DIR/$JAR_NAME
+          # Creem carpeta remota i ens assegurem dels permisos
+          ssh $REMOTE_USER@$REMOTE_IP "sudo mkdir -p $REMOTE_DIR && sudo chown ubuntu:ubuntu $REMOTE_DIR"
           
-          ssh $REMOTE_SERVER << EOF
-            cd $REMOTE_JAR_DIR
-            sudo docker-compose down
-            sudo docker-compose up -d --build
-            echo "done" >> $REMOTE_JAR_DIR/deployments.log
-            #mv $REMOTE_JAR_DIR/$JAR_NAME $REMOTE_JAR_DIR/notes.jar
-            #sudo systemctl restart notes.service
+          # Copiem els fitxers necessaris
+          scp build/libs/firstspringboot-0.0.1-SNAPSHOT.jar $REMOTE_USER@$REMOTE_IP:$REMOTE_DIR/firstspringboot.jar
+          scp docker-compose.yml $REMOTE_USER@$REMOTE_IP:$REMOTE_DIR/
+          scp dockerbuild $REMOTE_USER@$REMOTE_IP:$REMOTE_DIR/
+
+      - name: Execute Docker Compose on Remote Server
+        run: |
+          REMOTE_USER="ubuntu"
+          REMOTE_IP="${{ secrets.SERVER_IP2 }}"
+          REMOTE_DIR="/opt/docker/firstspringboot"
+          
+          ssh $REMOTE_USER@$REMOTE_IP << EOF
+            cd $REMOTE_DIR
+            # Usem la comanda moderna 'docker compose'
+            sudo docker compose up -d --build
+            echo "Desplegat amb èxit (Java 21) el \$(date)" >> deployments.log
           EOF
