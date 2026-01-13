@@ -47,7 +47,7 @@ jobs:
           
           # Copiem els fitxers necessaris
           scp build/libs/firstspringboot-0.0.1-SNAPSHOT.jar $REMOTE_USER@$REMOTE_IP:$REMOTE_DIR/firstspringboot.jar
-          scp docker-compose.yml $REMOTE_USER@$REMOTE_IP:$REMOTE_DIR/
+          scp docker-compose.yaml $REMOTE_USER@$REMOTE_IP:$REMOTE_DIR/
           scp dockerbuild $REMOTE_USER@$REMOTE_IP:$REMOTE_DIR/
 
       - name: Execute Docker Compose on Remote Server
