@@ -1,14 +1,38 @@
-# docker-compose.yml
-version: '3.8'
 services:
   springboot-app:
     container_name: sbapp
-#    env_file:
-#      - .env
     build:
-      context: .                # Carpeta arrel del projecte
-      dockerfile: dockerbuild  # Nom del Dockerfile personalitzat
+      context: .
+      dockerfile: dockerbuild
+    depends_on:
+      - mariadb
+    networks:
+      - xarxa1
     ports:
       - "8080:8080"
     environment:
-      MONGODBCONNECTION: ${MONGODBCONNECTION}
+      # Compte aquí: Estàs connectant a MariaDB o MongoDB?
+      # Si és MariaDB, la URL seria: jdbc:mariadb://mariadb:3306/nom_db
+      DATABASE_URL: ${DATABASE_URL:-jdbc:mariadb://mariadb:3306/mydb}
+      MONGODBCONNECTION: ${MONGODBCONNECTION} 
+
+  mariadb:
+    image: mariadb:11.4
+    container_name: mariadb
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: P@ssw0rd
+      MARIADB_DATABASE: mydb  # DB inicial
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - xarxa1
+    ports:
+      - "3306:3306"
+
+networks:
+  xarxa1:
+    name: xarxa1
+
+volumes:
+  mariadb_data: 

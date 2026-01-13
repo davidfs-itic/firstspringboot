@@ -42,6 +42,9 @@ services:
       - xarxa1
     ports:
       - "8080:8080"
+    environment:
+      # Compte aquí: Estàs connectant a MariaDB o MongoDB?
+      # Si és MariaDB, la URL seria: jdbc:mariadb://mariadb:3306/nom_db
       DATABASE_URL: ${DATABASE_URL:-jdbc:mariadb://mariadb:3306/mydb}
       MONGODBCONNECTION: ${MONGODBCONNECTION} 
 
@@ -51,7 +54,7 @@ services:
     restart: unless-stopped
     environment:
       MARIADB_ROOT_PASSWORD: P@ssw0rd
-      MARIADB_DATABASE: mydb  #DB inicial
+      MARIADB_DATABASE: mydb  # DB inicial
     volumes:
       - mariadb_data:/var/lib/mysql
     networks:
@@ -64,7 +67,7 @@ networks:
     name: xarxa1
 
 volumes:
-  mariadb_data:
+  mariadb_data: 
 ```
 
 ## 2. Execució:
