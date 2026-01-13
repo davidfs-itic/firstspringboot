@@ -13,7 +13,7 @@ services:
     environment:
       # Compte aquí: Estàs connectant a MariaDB o MongoDB?
       # Si és MariaDB, la URL seria: jdbc:mariadb://mariadb:3306/nom_db
-      DATABASE_URL: ${DATABASE_URL:-jdbc:mariadb://mariadb:3306/mydb}
+      DATABASE_URL: jdbc:mariadb://mariadb:3306/mydb}
       MONGODBCONNECTION: ${MONGODBCONNECTION} 
 
   mariadb:
