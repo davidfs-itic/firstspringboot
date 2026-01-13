@@ -82,3 +82,6 @@ Aturar els contenidors
 ```bash
 docker-compose down
 ```
+
+## 3. Crear instànicia Oracle i obrir ports:
+[https://davidfs-itic.github.io/davidfs-itic/IoT/oracle/](https://davidfs-itic.github.io/davidfs-itic/IoT/oracle/)
