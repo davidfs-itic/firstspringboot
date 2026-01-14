@@ -1,8 +1,8 @@
-# Docker file i docker compose per desplegar la app en remot, d'un sol cop
+# Dockerfile i docker-compose per desplegar la app en remot
 
 ## 1. Preparació 
 Per engegar els contenidors amb la vostra app en un jar:
-### Arxius necessaris
+
 - Cal tenir els tres arxius al servidor:
     - springbootapp.jar
     - dockerbuild
@@ -14,6 +14,7 @@ Des del vostre ordinador, podeu copiar remotament l'arxiu jar
 ```bash
 scp springbootapp.jar usuari@ip_servidor:./
 ```
+
 ### Arxiu **dockerbuild**
 Creeu el vostre arxiu dockerbuild al servidor remot
 ```
