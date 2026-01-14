@@ -9,20 +9,20 @@ services:
     networks:
       - xarxa1
     ports:
-      - "8080:8080"
+      - "8000:8000"
     environment:
-      # Compte aquí: Estàs connectant a MariaDB o MongoDB?
-      # Si és MariaDB, la URL seria: jdbc:mariadb://mariadb:3306/nom_db
-      DATABASE_URL: jdbc:mariadb://mariadb:3306/mydb}
-      MONGODBCONNECTION: ${MONGODBCONNECTION} 
+      SPRINT_DATASOURCE_USERNAME: root
+      SPRINT_DATASOURCE_PASSWORD: 1234
+      SPRINT_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/demo
+
 
   mariadb:
     image: mariadb:11.4
     container_name: mariadb
     restart: unless-stopped
     environment:
-      MARIADB_ROOT_PASSWORD: P@ssw0rd
-      MARIADB_DATABASE: mydb  # DB inicial
+      MARIADB_ROOT_PASSWORD: 1234
+      MARIADB_DATABASE: demo 
     volumes:
       - mariadb_data:/var/lib/mysql
     networks:
