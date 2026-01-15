@@ -5,34 +5,34 @@ services:
       context: .
       dockerfile: dockerbuild
     depends_on:
-      - mariadb
+      - mysql
     networks:
       - xarxa1
     ports:
-      - "8000:8000"
+      - "8080:8080"
     environment:
-      SPRINT_DATASOURCE_USERNAME: root
-      SPRINT_DATASOURCE_PASSWORD: 1234
-      SPRINT_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/demo
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: 1234
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/demo
 
-
-  mariadb:
-    image: mariadb:11.4
-    container_name: mariadb
+  mysql:
+    image: mysql:9.5.0
+    container_name: mysqldb
     restart: unless-stopped
     environment:
-      MARIADB_ROOT_PASSWORD: 1234
-      MARIADB_DATABASE: demo 
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: demo
+      MYSQL_USER: user
+      MYSQL_PASSWORD: 1234
     volumes:
-      - mariadb_data:/var/lib/mysql
-    networks:
+      - mysql_data:/var/lib/mysql
+    networks: 
       - xarxa1
     ports:
       - "3306:3306"
-
 networks:
   xarxa1:
     name: xarxa1
 
 volumes:
-  mariadb_data: 
+  mysql_data: 

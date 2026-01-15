@@ -1,4 +1,4 @@
-FROM openjdk:17-alpine
+FROM eclipse-temurin:21-alpine
 RUN addgroup -S docker && adduser -S appuser -G docker
 USER appuser
 WORKDIR /home/appuser
