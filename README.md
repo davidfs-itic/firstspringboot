@@ -1,6 +1,16 @@
 # Dockerfile i docker-compose per desplegar la app en remot
 
-## 1. Preparació 
+
+
+## 1. Crear instància Oracle i obrir ports:
+[https://davidfs-itic.github.io/davidfs-itic/IoT/oracle/](https://davidfs-itic.github.io/davidfs-itic/IoT/oracle/)
+
+## 2. Instal·lació docker (si utilitzem un ubuntu sense configurar)
+Seguir instruccions a :
+https://docs.docker.com/engine/install/ubuntu/
+
+
+## 3. Preparació 
 Per engegar els contenidors amb la vostra app en un jar:
 
 - Cal tenir els tres arxius al servidor:
@@ -71,7 +81,7 @@ volumes:
   mysql_data: 
 ```
 
-## 2. Execució:
+## 4. Execució:
 
 En la carpeta on estiguin els tres arxius:
 
@@ -85,5 +95,18 @@ Aturar els contenidors
 docker-compose down
 ```
 
-## 3. Crear instància Oracle i obrir ports:
-[https://davidfs-itic.github.io/davidfs-itic/IoT/oracle/](https://davidfs-itic.github.io/davidfs-itic/IoT/oracle/)
+Un cop engegats, podeu la seguent comanda per veure si estàn actius o no: (haurieu de veure el **Status Up**)
+```bash
+docker ps -a
+
+root@oracleitic2 ~ $ docker ps -a
+CONTAINER ID   IMAGE                            COMMAND                  CREATED        STATUS        PORTS                                                    NAMES
+5d7fab578649   firstspringboot_springboot-app   "java -jar /home/app…"   29 hours ago   Up 29 hours   0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp              sbapp
+cd240860c194   mysql:9.5.0                      "docker-entrypoint.s…"   29 hours ago   Up 29 hours   0.0.0.0:3306->3306/tcp, [::]:3306->3306/tcp, 33060/tcp   mysqldb
+
+```
+
+En cas que no estiguin en estat up, podeu veure els logs fent un:
+```bash
+docker logs sbapp
+```

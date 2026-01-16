@@ -1,10 +1,21 @@
 name: Deploy Springboot in Docker
 
 on:
-  push:
-    branches:
-      - main
-
+#  push:
+#    branches:
+#      - main
+## deshabilitat per desplegar manualment des de l'interfície de GitHub
+  workflow_dispatch:
+    inputs:
+      environment: 
+        description: 'Entorn de desplegament' 
+        required: true
+        default: 'production'
+        type: choice
+        options:
+        - production
+        - staging
+        
 jobs:
   deploy:
     runs-on: ubuntu-latest
