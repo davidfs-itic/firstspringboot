@@ -3,4 +3,4 @@ RUN addgroup -S docker && adduser -S appuser -G docker
 USER appuser
 WORKDIR /home/appuser
 COPY firstspringboot.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT ["java","-jar","/home/appuser/app.jar"]
