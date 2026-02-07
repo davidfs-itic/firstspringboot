@@ -28,12 +28,12 @@ scp springbootapp.jar usuari@ip_servidor:./
 ### Arxiu **dockerbuild**
 Creeu el vostre arxiu dockerbuild al servidor remot
 ```
-FROM openjdk:17-alpine
+FROM eclipse-temurin:21-alpine
 RUN addgroup -S docker && adduser -S appuser -G docker
 USER appuser
 WORKDIR /home/appuser
-COPY springbootapp.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+COPY firstspringboot.jar app.jar
+ENTRYPOINT ["java","-jar","/home/appuser/app.jar"]
 ```
 
 
@@ -90,7 +90,7 @@ Engegar contenidors (cada vegada que es canvii el codi font)
 docker-compose up -d --build
 ```
 
-Aturar els contenidors
+Aturar els contenidors (s'ha de fer si estan engegats, abans de fer el up)
 ```bash
 docker-compose down
 ```
